@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zy.mapper.OrderMapper">
+    <select id="orderList" resultMap="orderBean">
+        select o.id oid,o.codes, oi.id oiid,oi.number, p.name pname, p.id pid,p.price
+        from orders o
+                     left join order_item oi on o.id =oi.oid
+                     left join product p on p.id = oi.pid
+
+    </select>
+
+    <resultMap id="orderBean" type="com.zy.pojo.Orders">
+        <id column="oid" property="id"/>
+        <result column="codes" property="codes"/>
+
+        <collection property="orderItemList" ofType="com.zy.pojo.OrderItem">
+            <id column="ooid" property="id"/>
+            <result column="number" property="number"/>
+            <association property="product" javaType="com.zy.pojo.Product">
+                <id column="pid" property="id"/>
+                <result column="pname" property="name"/>
+                <result column="price" property="price"/>
+            </association>
+        </collection>
+    </resultMap>
+
+    <select id="getOrder" resultMap="orderBean">
+        select o.id oid,o.codes, oi.id oiid,oi.number, p.name pname, p.id pid,p.price
+        from orders o
+                     left join order_item oi on o.id =oi.oid
+                     left join product p on p.id = oi.pid
+        where o.id=#{id}
+
+    </select>
+
+    <delete id="delOrder" parameterType="int">
+        delete from order_item where oid = #{id};
+
+    </delete>
+</mapper>

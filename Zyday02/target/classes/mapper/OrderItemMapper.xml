@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zy.mapper.OrderItemMapper">
+
+    <insert id="addOrderItem" parameterType="com.zy.pojo.OrderItem">
+        insert into order_item value (null,#{orders.id},#{product.id},#{number})
+    </insert>
+
+    <delete id="delOrderItem" parameterType="com.zy.pojo.OrderItem">
+        delete from order_item  where oid=#{orders.id} and pid =#{product.id}
+    </delete>
+
+</mapper>

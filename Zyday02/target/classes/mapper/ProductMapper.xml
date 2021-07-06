@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zy.mapper.ProductMapper">
+    <resultMap id="productBean" type="com.zy.pojo.Product">
+        <id column="pid" property="id"/>
+        <result column="pname" property="name"/>
+        <!-- 多以一 -->
+        <!-- property: 指的是属性名称, javaType：指的是属性的类型 -->
+        <association property="category" javaType="com.zy.pojo.Category">
+            <id column="cid" property="id"/>
+            <result column="cname" property="name"/>
+        </association>
+    </resultMap>
+
+    <select id="productList" resultMap="productBean">
+        select c.id as 'cid', c.name as 'cname',p.id as 'pid', p.name as 'pname' ,p.price
+        from
+                category c left join product p
+                        on
+                                c.id = p.cid
+    </select>
+
+    <select id="getProduct" resultMap="productBean">
+        select c.id cid, c.name cname,p.id pid, p.name pname ,p.price
+        from
+       category c left join product p
+       on
+       c.id = p.cid
+        where p.id=#{id}
+    </select>
+
+
+</mapper>
